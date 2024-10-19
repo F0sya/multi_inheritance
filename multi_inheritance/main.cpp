@@ -1,72 +1,64 @@
 #include <iostream>
 using namespace std;
 
+template<typename T1, typename T2>
 
-class Square {
+class Base{
 protected:
-	int side;
-
+	T1 value1;
+	T2 value2;
 public:
-	Square(int s) : side(s) {}
-	virtual ~Square() {
-		cout << "Class Square destructor called" << endl;
+	Base(T1 val1,T2 val2) : value1(val1), value2(val2) {}
+	virtual ~Base() {
+		cout << "Base destructor called" << endl;
 	}
-	virtual int getSide() const {
-		return side;
+
+	void show() {
+		cout << "Base: value1 = " << value1 << ", value2 = " << value2 << endl;
 	}
-	virtual double getArea() const {
-		return side * side;
+};
+template<typename T1, typename T2, typename T3, typename T4>
+class child1 : public Base<T1, T2> {
+protected:
+	T3 value3;
+	T4 value4;
+public:
+	child1(T1 val1, T2 val2, T3 val3, T4 val4) : Base<T1, T2>(val1, val2), value3(val3), value4(val4) {}
+
+	~child1() {
+		cout << "child1 destructor called" << endl;
 	}
-	virtual int getPerimeter() const {
-		return 4 * side;
+
+	void show() {
+		Base<T1, T2>::show();
+		cout << "child1: value3 = " << value3 << ", value4 = " << value4 << endl;
 	}
 };
 
-class Circle {
+template<typename T1, typename T2, typename T5, typename T6>
+class child2 : public Base<T1, T2> {
 protected:
-	int radius;
-
+	T5 value5;
+	T6 value6;
 public:
-	Circle(int r) : radius(r) {}
-	virtual ~Circle() {
-		cout << "Class Circle destructor called" << endl;
-	}
-	virtual int getRadius() const {
-		return radius;
-	}
-	virtual double getArea() const {
-		return 3.14 * radius * radius;
-	}
-	virtual int getLength() const {
-		return 2 * 3.14 * radius;
-	}
-};
+	child2(T1 val1, T2 val2, T5 val5, T6 val6) : Base<T1, T2>(val1, val2), value5(val5), value6(val6) {}
 
-class CircleInSquare : public Square, public Circle {
-public:
-	CircleInSquare(int side) :  Square(side), Circle(side / 2) {}
-	~CircleInSquare() {
-		cout << "Class CircleInSquare destructor called" << endl;
+	~child2() {
+		cout << "child2 destructor called" << endl;
 	}
 
-	void show() const {
-		cout << "Square parameters:\n"
-			"-Square side:" << getSide() << "\n"
-			"-Square area:" << Square::getArea() << "\n"
-			"-Square perimeter:" << Square::getPerimeter() << "\n"
-			"Circle parameters:\n"
-			"-Circle radius:" << getRadius() << "\n"
-			"-Circle area:" << Circle::getArea() << "\n" <<
-			"-Circle length:" << Circle::getLength() << "\n" << endl;
+	void show() {
+		Base<T1, T2>::show();
+		cout << "child2: value5 = " << value5 << ", value6 = " << value6<< endl;
 	}
 };
 
 int main() {
-	CircleInSquare* size = new CircleInSquare(10);
+	child1<int, char, int, char> child1(10, 'a', 20, 'b');
 
-	size->show();
+	child1.show();
 
-	delete size;
-	return 0;
+	child2<int, char, int, char> child2(100, 'a', 200, 'b');
 
+	child2.show();
 }
