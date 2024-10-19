@@ -61,6 +61,7 @@ public:
 	}
 };
 
+
 int main() {
 	CircleInSquare* size = new CircleInSquare(10);
 
