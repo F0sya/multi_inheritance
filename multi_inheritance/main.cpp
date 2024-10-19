@@ -1,72 +1,77 @@
 #include <iostream>
 using namespace std;
 
-
-class Square {
+class Wheels {
 protected:
-	int side;
-
+    int wheels_amount;
 public:
-	Square(int s) : side(s) {}
-	virtual ~Square() {
-		cout << "Class Square destructor called" << endl;
-	}
-	virtual int getSide() const {
-		return side;
-	}
-	virtual double getArea() const {
-		return side * side;
-	}
-	virtual int getPerimeter() const {
-		return 4 * side;
-	}
+    Wheels(int amount) : wheels_amount(amount) {};
+    virtual ~Wheels() {
+        cout << "Wheel destructor called" << endl;
+    }
+    virtual void print() const {
+        cout << "Your car has " << wheels_amount << " wheels." << endl;
+    }
 };
 
-class Circle {
+class Fuel_tank {
 protected:
-	int radius;
-
+    int volume;
 public:
-	Circle(int r) : radius(r) {}
-	virtual ~Circle() {
-		cout << "Class Circle destructor called" << endl;
-	}
-	virtual int getRadius() const {
-		return radius;
-	}
-	virtual double getArea() const {
-		return 3.14 * radius * radius;
-	}
-	virtual int getLength() const {
-		return 2 * 3.14 * radius;
-	}
+    Fuel_tank(int v) : volume(v) {};
+    virtual ~Fuel_tank() {
+        cout << "Fuel tank destructor called" << endl;
+    }
+    virtual void print() const {
+        cout << "Your car fuel tank can contain " << volume << " gallons of fuel" << endl;
+    }
 };
 
-class CircleInSquare : public Square, public Circle {
+class Engine {
+protected:
+    int cylinders;
 public:
-	CircleInSquare(int side) :  Square(side), Circle(side / 2) {}
-	~CircleInSquare() {
-		cout << "Class CircleInSquare destructor called" << endl;
-	}
+    Engine(int v_amount) : cylinders(v_amount) {}
+    virtual ~Engine() {
+        cout << "Engine destructor called" << endl;
+    }
+    virtual void print() const {
+        cout << "Your car has " << cylinders << " cylinders." << endl;
+    }
+};
 
-	void show() const {
-		cout << "Square parameters:\n"
-			"-Square side:" << getSide() << "\n"
-			"-Square area:" << Square::getArea() << "\n"
-			"-Square perimeter:" << Square::getPerimeter() << "\n"
-			"Circle parameters:\n"
-			"-Circle radius:" << getRadius() << "\n"
-			"-Circle area:" << Circle::getArea() << "\n" <<
-			"-Circle length:" << Circle::getLength() << "\n" << endl;
-	}
+class Doors {
+protected:
+    int door_count;
+public:
+    Doors(int doors) : door_count(doors) {};
+    virtual ~Doors() {
+        cout << "Doors destructor called" << endl;
+    }
+    virtual void print() const {
+        cout << "Your car has " << door_count << endl;
+    }
+};
+
+class Car : virtual public Wheels, virtual public Engine, virtual public Doors, virtual public Fuel_tank {
+protected:
+public:
+    Car(int wheels, int cylinders, int doors, int volume)
+        : Wheels(wheels), Engine(cylinders), Doors(doors), Fuel_tank(volume) {}
+
+    void print() const override {
+        cout << "Your car has: "<< endl;
+        Wheels::print();
+        Engine::print();
+        Doors::print();
+        Fuel_tank::print();
+    }
 };
 
 int main() {
-	CircleInSquare* size = new CircleInSquare(10);
-
-	size->show();
-
-	delete size;
-	return 0;
-
+    Car* mycar = new Car(4, 16, 2, 5);
+    mycar->print();
+    cout << endl << "<<------------------------------------------------>>" << endl << endl;
+    delete mycar;
+    return 0;
 }
